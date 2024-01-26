@@ -13,9 +13,7 @@ class UserProfile(models.Model):
 
     active = models.BooleanField(default=True)
     created_on = models.DateTimeField(auto_now_add=True,null=True)
-    created_by_id = models.ForeignKey("UserProfile", related_name='+', on_delete=models.CASCADE,db_column='created_by_id',null=True)
     updated_on = models.DateTimeField(auto_now=True,null=True)
-    updated_by_id = models.ForeignKey("UserProfile", related_name='+', on_delete=models.CASCADE,db_column='updated_by_id',null=True)
 
     #Basic details
     user_type = models.CharField(max_length=255, choices=USER_TYPES, default='lender')
@@ -31,7 +29,7 @@ class UserProfile(models.Model):
         return self.first_name+'('+self.username+')'
 
     class Meta:
-        db_table = 'user_profile'
+        db_table = 'userprofile'
 
 class GeneralFields(models.Model):
     active = models.BooleanField(default=True)
@@ -47,7 +45,6 @@ class GeneralFields(models.Model):
 class AccessToken(GeneralFields):
     key = models.CharField(max_length=255)
     user_id = models.ForeignKey(User,on_delete=models.CASCADE,db_column='user_id')
-    country_id = models.IntegerField(null=True)
 
     class Meta:
-        db_table = 'user_accesstoken'
+        db_table = 'accesstoken'

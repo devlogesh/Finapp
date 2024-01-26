@@ -7,6 +7,7 @@ from rest_framework import status, generics,filters
 from rest_framework.authtoken.models import Token
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
+from django.contrib.auth import authenticate,login
 
 from .functions import *
 # Create your views here.
@@ -15,18 +16,10 @@ from .functions import *
 class UserSignup(APIView):
     permission_classes = [AllowAny]
     def post(self,request):
-        data = user_parser(request)
-        print(data,"DATA")
         token_key = request.META.get('HTTP_AUTHORIZATION')
-        if 'access_key' in request.data:
-            print(request.data['access_key'],"request.data['access_key']")
-            if request.data['access_key'] != "SelmuruganBondamani":
-                return Response({'message':'Access Key Mismatch'},status=status.HTTP_400_BAD_REQUEST)
-            user_params = user_parser(request)
-        elif token_key:
-            user_params = user_parser(request)
-        else:
-            return Response({"message":"Access Key or Token Must"},status=status.HTTP_400_BAD_REQUEST)
+        user_params = user_parser(request)
+        if len(user_params['profile']['mobile']) != 10:
+            return Response({"message":"Mobile No. length Should be 10"},status=status.HTTP_400_BAD_REQUEST)
         user_serializer = UserCreateSerializer(data=user_params['user'])
         if user_serializer.is_valid():
             user = User.objects.create(**user_serializer.validated_data)
@@ -46,6 +39,34 @@ class UserSignup(APIView):
                 return Response({"error":profile_serializer.errors},status=status.HTTP_400_BAD_REQUEST)
         else:
             return Response({"error":user_serializer.errors},status=status.HTTP_400_BAD_REQUEST)
-            
 
 
+class LoginAPI(APIView):
+    permission_classes = [AllowAny]
+    def post(self,request):
+        request_data = request.data      
+        username = request_data.get('username')
+        password = request_data.get('password')
+        if username and password:
+            user = authenticate(username=username,password=password)
+            if user:
+                profile = UserProfile.objects.filter(user_id=user.id)
+                if len(profile) == 0:
+                    return Response({"messge":"UserProfile is not mapped for this User"},status=status.HTTP_400_BAD_REQUEST)
+                else:
+                    login(request,user)
+                    token_id = Token.objects.filter(user_id = user.id)
+                    if len(token_id)>0:
+                        token_id.delete()
+                    token,create = Token.objects.get_or_create(user=user)
+                    access_token = AccessToken.objects.create(user_id=user
+                    ,key=token.key,created_by_id=profile[0],updated_by_id=profile[0])
+                    serializer = UserProfileSerializer(profile[0])
+                    serializer_dict = serializer.data
+                    serializer_dict['token_key'] = token.key
+                    return Response(serializer_dict,status=status.HTTP_200_OK)
+
+            else:
+                return Response({"messge":"username or password is incorrect"},status=status.HTTP_400_BAD_REQUEST)
+        else:
+            return Response({"messge":"please provide username and password"},status=status.HTTP_400_BAD_REQUEST)
