@@ -16,7 +16,7 @@ class UserProfile(models.Model):
     updated_on = models.DateTimeField(auto_now=True,null=True)
 
     #Basic details
-    user_type = models.CharField(max_length=255, choices=USER_TYPES, default='lender')
+    user_type = models.CharField(max_length=10, choices=USER_TYPES, default='lender')
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100,null=True,blank=True)
     email = models.CharField(max_length=50,unique=True,null=True,blank=True)
@@ -24,6 +24,9 @@ class UserProfile(models.Model):
     user_id = models.OneToOneField(User, on_delete=models.CASCADE,db_column='user_id')
     username = models.CharField(max_length=100,unique=True)
     code = models.CharField(max_length=15,unique=True)
+    company_name = models.CharField(max_length=100)
+    pincode = models.CharField(max_length=100)
+    collectionLines = models.CharField(max_length=300,null=True,blank=True)
 
     def __str__(self):
         return self.first_name+'('+self.username+')'
