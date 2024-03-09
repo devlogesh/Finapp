@@ -64,6 +64,16 @@ class LoginAPI(APIView):
                     serializer = UserProfileSerializer(profile[0])
                     serializer_dict = serializer.data
                     serializer_dict['token_key'] = token.key
+                    serializer_dict['address'] = {'line1': serializer_dict['address_line1'],'line2': serializer_dict['address_line2'],'street': serializer_dict['street'],'city': serializer_dict['city'],'district': serializer_dict['district'], 'state': serializer_dict['state'], 'country': serializer_dict['country'], 'zipCode': serializer_dict['pincode']}
+                    del serializer_dict['address_line1']
+                    del serializer_dict['address_line2']
+                    del serializer_dict['street']
+                    del serializer_dict['city']
+                    del serializer_dict['district']
+                    del serializer_dict['state']
+                    del serializer_dict['country']
+                    del serializer_dict['pincode']
+
                     return Response(serializer_dict,status=status.HTTP_200_OK)
 
             else:

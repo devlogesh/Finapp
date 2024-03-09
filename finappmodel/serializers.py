@@ -40,4 +40,4 @@ class UserCreateSerializer(serializers.ModelSerializer):
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserProfile
-        fields = '__all__'
+        exclude=['company_name','pincode','country']

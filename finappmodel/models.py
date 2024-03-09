@@ -26,6 +26,13 @@ class UserProfile(models.Model):
     code = models.CharField(max_length=15,unique=True)
     company_name = models.CharField(max_length=100)
     pincode = models.CharField(max_length=100)
+    country = models.CharField(max_length=100)
+    state = models.CharField(max_length=100,null=True,blank=True)
+    district = models.CharField(max_length=100,null=True,blank=True)
+    city = models.CharField(max_length=100,null=True,blank=True)
+    street = models.CharField(max_length=100,null=True,blank=True)
+    address_line1 = models.CharField(max_length=100,null=True,blank=True)
+    address_line2 = models.CharField(max_length=100,null=True,blank=True)
     collectionLines = models.CharField(max_length=300,null=True,blank=True)
 
     def __str__(self):
