@@ -27,7 +27,7 @@ class UserSignup(APIView):
             user.save()
             user_id = user.id
             user_params['profile']['user_id'] = user_id
-            user_params['profile']['code'] = "EX123"
+            user_params['profile']['code'] = "EX1231"
             
             profile_serializer = UserProfileSerializer(data=user_params['profile'])
             if profile_serializer.is_valid():
