@@ -1,4 +1,5 @@
 {
+    "version":2,
     "builds": [
         {
             "src": "finapp/wsgi.py",
@@ -9,7 +10,7 @@
             }
         },
         {
-            "src": "build_files.sh",
+            "src": "build.sh",
             "use": "@vercel/static-build",
             "config": {
                 "distDir": "staticfiles_build"
