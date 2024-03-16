@@ -8,6 +8,7 @@ from rest_framework.authtoken.models import Token
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
 from django.contrib.auth import authenticate,login
+import random
 
 from .functions import *
 # Create your views here.
@@ -27,7 +28,8 @@ class UserSignup(APIView):
             user.save()
             user_id = user.id
             user_params['profile']['user_id'] = user_id
-            user_params['profile']['code'] = "EX1231"
+            user_params['profile']['code'] = user_params['profile']['username'][:3] + str(random.randrange(100, 1000))
+
             
             profile_serializer = UserProfileSerializer(data=user_params['profile'])
             if profile_serializer.is_valid():
