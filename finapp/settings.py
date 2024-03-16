@@ -28,7 +28,7 @@ SECRET_KEY = 'django-insecure-^^nu^plux=x3$7_+db7m-r$)@f=em3ng-ppd5qy*j-qga%zox7
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['.vercel.app']
+ALLOWED_HOSTS = ['.vercel.app','127.0.0.1']
 
 
 # Application definition
@@ -104,13 +104,23 @@ WSGI_APPLICATION = 'finapp.wsgi.application'
 #     }
 # }
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'mydb_finapp',
+        'USER': 'mydb',
+        'PASSWORD': 'Mq2pe3p2A3wW8eQ',
+        'HOST': 'postgresql-mydb.alwaysdata.net',  # Usually 'localhost' or '127.0.0.1'
+        'PORT': '5432',  # Default is usually 5432
     }
 }
-DATABASES['default'] = dj_database_url.config()#conn_max_age=600, ssl_require=True
+# DATABASES['default'] = dj_database_url.config()#conn_max_age=600, ssl_require=True
 # DATABASES['default']['OPTIONS']['charset'] = 'utf8mb4'
 # del DATABASES['default']['OPTIONS']['sslmode'] 
 # DATABASES['default']['OPTIONS']['ssl'] =  {'ca': os.environ.get('MYSQL_ATTR_SSL_CA')}
