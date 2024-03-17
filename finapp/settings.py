@@ -73,7 +73,8 @@ MIDDLEWARE = [
 
 CORS_ORIGIN_WHITELIST = [
     'http://localhost:4200',  # Angular development server
-    'https://finapp-ten.vercel.app',    # Production domain
+    'http://127.0.0.1:4200',
+    'https://finapp-ten.vercel.app'    # Production domain
 ]
 
 
