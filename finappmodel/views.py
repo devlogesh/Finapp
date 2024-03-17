@@ -63,7 +63,7 @@ class LoginAPI(APIView):
                     token,create = Token.objects.get_or_create(user=user)
                     access_token = AccessToken.objects.create(user_id=user
                     ,key=token.key,created_by_id=profile[0],updated_by_id=profile[0])
-                    serializer = UserProfileSerializer(profile[0])
+                    serializer = GetUserProfileSerializer(profile[0])
                     serializer_dict = serializer.data
                     serializer_dict['token_key'] = token.key
                     serializer_dict['address'] = {'line1': serializer_dict['address_line1'],'line2': serializer_dict['address_line2'],'street': serializer_dict['street'],'city': serializer_dict['city'],'district': serializer_dict['district'], 'state': serializer_dict['state'], 'country': serializer_dict['country'], 'zipCode': serializer_dict['pincode']}
